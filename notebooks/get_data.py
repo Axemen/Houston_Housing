@@ -10,7 +10,7 @@ from pprint import pprint
 # from api_keys import gkey
 import time
 
-df = pd.read_csv('County_Adds.csv')
+df = pd.read_csv('../data/cleandata/County_Adds.csv')
 df = df[['zip', 'address', 'lat', 'lng', 'County']]
 df['taxAssessment'] = ''
 df['lot sq/ft'] = ''
@@ -26,7 +26,7 @@ params = {
     'citystatezip':'77466'
 }
 start = time.time()
-for i in range(100):
+for i in range(len(df)):
     
     params['address'] = df.iloc[i, 1]
     params['citystatezip'] = df.iloc[i, 0]
@@ -39,19 +39,22 @@ for i in range(100):
         print('response error')
         continue
     try:
-        print(f"{i}, {df.iloc[i, 1]}")
+        print(f"{time.time() - start}")
         df.iat[i, 5] = response_result[('SearchResults:searchresults')][('response')][('results')][('result')][('taxAssessment')]
         df.iat[i, 6] = response_result[('SearchResults:searchresults')][('response')][('results')][('result')][('lotSizeSqFt')]
         df.iat[i, 7] = response_result[('SearchResults:searchresults')][('response')][('results')][('result')][('finishedSqFt')]
         df.iat[i, 8] = response_result[('SearchResults:searchresults')][('response')][('results')][('result')][('zestimate')][('amount')][('#text')]
         df.iat[i, 9] = response_result[('SearchResults:searchresults')][('response')][('results')][('result')][('zestimate')][('valuationRange')][('low')][('#text')]
         df.iat[i, 10] = response_result[('SearchResults:searchresults')][('response')][('results')][('result')][('zestimate')][('valuationRange')][('high')][('#text')]
+        # df.to_csv('temp_output.csv', index=False)
     except KeyError:
         print('KeyError')
         
     except:
         print("Unexpected error:")
 
+
+df.to_csv('temp_output.csv', index=False)
 end = time.time()
 print(end-start)
 # print(df.head())
