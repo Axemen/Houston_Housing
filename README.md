@@ -8,7 +8,7 @@
 
 <p><strong>Research Questions:</strong></p>
 
-<p><ol>How does price (or price/area?) relate to:
+<p>How does price (or price/area?) relate to:<ol>
   
   <li>Likelihood of flooding/Cost of flood insurance?</li>
   <li>Average lot size?</li>
